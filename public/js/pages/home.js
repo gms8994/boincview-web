@@ -8,9 +8,7 @@ window.onload = function () {
 			sortReverse: 1,
 		},
 		ready: function() {
-			this.fetchEvents();
 			this.fetchHosts();
-			setInterval(this.fetchEvents, 5000);
 			setInterval(this.fetchHosts, 5000);
 		},
 		methods: {
@@ -24,6 +22,7 @@ window.onload = function () {
 			fetchHosts: function() {
 				this.$http.get('/hosts.json').then((response) => {
 					this.$set('hosts', response.body);
+					this.fetchEvents();
 				}, (response) => {
 					console.debug(response);
 				});
