@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/components/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="/css/general.css">
-		<script src="/components/moment/moment.js"></script>
-		<script src="/components/moment-duration-format/lib/moment-duration-format.js"></script>
-		<script src="/components/vue/dist/vue.js"></script>
-		<script src="/components/vue-resource/dist/vue-resource.js"></script>
-		<script src="/components/javascript-natural-sort/naturalSort.js"></script>
-		<script src="/js/pages/home.js"></script>
-	</head>
+  <head>
+    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/general.css">
+    <script src="/components/moment/moment.js"></script>
+    <script src="/components/moment-duration-format/lib/moment-duration-format.js"></script>
+    <script src="/components/vue/dist/vue.js"></script>
+    <script src="/components/vue-resource/dist/vue-resource.js"></script>
+    <script src="/components/javascript-natural-sort/naturalSort.js"></script>
+    <script src="/js/pages/home.js"></script>
+  </head>
 
-	<body>
-		<div id="app">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-2 well">
-						<ul>
-						[% FOREACH host IN hosts %]
-						<li>[% host %]</li>
-						[% END %]
-						</ul>
-					</div>
-					<div class="col-md-10">
-						<ul class="nav nav-tabs">
-							<li role="presentation"><a href="#">Projects</a></li>
-							<li role="presentation"><a href="#">Hosts</a></li>
-							<li role="presentation" class="active"><a href="#">Work</a></li>
-							<li role="presentation"><a href="#">Completed</a></li>
-							<li role="presentation"><a href="#">Transfers</a></li>
-							<li role="presentation"><a href="#">Disk</a></li>
-							<li role="presentation"><a href="#">Messages</a></li>
-						</ul>
-						[% content %]
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
+  <body>
+    <div id="app">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-2">
+            <ul class="list-group">
+              <li v-for="host in hosts" v-bind:class="{ 'list-group-item': true, 'list-group-item-danger': host.active == 0, 'list-group-item-success': host.active == 1 }">{{ host.name }}</li>
+            </ul>
+          </div>
+          <div class="col-md-10">
+            <ul class="nav nav-tabs">
+              <li role="presentation"><a href="#">Projects</a></li>
+              <li role="presentation"><a href="#">Hosts</a></li>
+              <li role="presentation" class="active"><a href="#">Work</a></li>
+              <li role="presentation"><a href="#">Completed</a></li>
+              <li role="presentation"><a href="#">Transfers</a></li>
+              <li role="presentation"><a href="#">Disk</a></li>
+              <li role="presentation"><a href="#">Messages</a></li>
+            </ul>
+            [% content %]
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

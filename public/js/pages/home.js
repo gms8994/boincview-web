@@ -2,18 +2,28 @@ window.onload = function () {
 	new Vue({
 		el: '#app',
 		data: {
+			hosts: [],
 			tasks: [],
 			sortType: 'project',
 			sortReverse: 1,
 		},
 		ready: function() {
 			this.fetchEvents();
+			this.fetchHosts();
 			setInterval(this.fetchEvents, 5000);
+			setInterval(this.fetchHosts, 5000);
 		},
 		methods: {
 			fetchEvents: function() {
 				this.$http.get('/tasks.json').then((response) => {
 					this.$set('tasks', response.body);
+				}, (response) => {
+					console.debug(response);
+				});
+			},
+			fetchHosts: function() {
+				this.$http.get('/hosts.json').then((response) => {
+					this.$set('hosts', response.body);
 				}, (response) => {
 					console.debug(response);
 				});
@@ -30,6 +40,7 @@ window.onload = function () {
 				return moment.duration(number * 1000).format(format, { trim: false });
 			},
 			caseInsensitiveOrderBy: function (arr, sortKey, reverse) {
+				return arr;
 				// arr = convertArray(arr)
 				if (!sortKey) {
 					return arr
@@ -41,7 +52,6 @@ window.onload = function () {
 						if (Vue.util.isObject(a) && '$value' in a) a = a.$value
 						if (Vue.util.isObject(b) && '$value' in b) b = b.$value
 					}
-					console.log(a, sortKey, Vue.parsers.path.getPath(a, sortKey));
 					a = Vue.util.isObject(a) ? Vue.parsers.path.getPath(a, sortKey) : a
 					b = Vue.util.isObject(b) ? Vue.parsers.path.getPath(b, sortKey) : b
 
