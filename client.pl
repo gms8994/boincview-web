@@ -33,7 +33,6 @@ get '/' => sub {
 		'Result' => 'result',
 		'Host' => 'node',
 		'CPU Time' => 'cpu_time',
-		'Application' => 'application',
 		'% done' => 'percent_done',
 		'Status' => 'status',
 		'To completion' => 'to_completion',
@@ -46,7 +45,6 @@ get '/' => sub {
 		'Result',
 		'Host',
 		'CPU Time',
-		'Application',
 		'% done',
 		'Status',
 		'To completion',
@@ -106,7 +104,10 @@ sub fetch_host_activity {
 
 		foreach my $node (@{$nodes}) {
 			my %node_work;
-			$node_work{project} = $host_section;
+
+			my $project_url = $xp->findvalue('project_url', $node)->value();
+
+			$node_work{project} = $xp->findvalue('//project[master_url/text() = "' . $project_url . '"]/project_name')->value();
 			$node_work{application} = $host_section;
 			$node_work{node} = $host_section;
 			$node_work{cpu_time} = $xp->findvalue('active_task/current_cpu_time', $node)->value();
@@ -114,7 +115,7 @@ sub fetch_host_activity {
 			$node_work{status} = $xp->findvalue('active_task/active_task_state', $node)->value();
 			$node_work{to_completion} = $xp->findvalue('estimated_cpu_time_remaining', $node)->value();
 			$node_work{result} = $xp->findvalue('wu_name', $node)->value();
-			$node_work{report_deadline} = $xp->findvalue('report_deadline', $node)->value();
+			$node_work{report_deadline} = $xp->findvalue('report_deadline', $node)->value() * 1000; # in ms
 			$node_work{completion_at} = $node_work{to_completion};
 
 			push @results, \%node_work;
