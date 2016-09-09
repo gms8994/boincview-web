@@ -1,0 +1,7 @@
+[pretty_host_name]
+ip = ip_or_hostname
+key = gui_rpc_auth_key
+
+[pretty_host_name_2]
+ip = ip_or_hostname_2
+key = gui_rpc_auth_key_2
