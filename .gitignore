@@ -19,3 +19,8 @@ nytprof.out
 *.bs
 /_eumm/
 boinc.ini
+/bin/
+/lib/
+/logs/
+/man/
+/public/components/
