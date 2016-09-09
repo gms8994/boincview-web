@@ -9,12 +9,12 @@ window.onload = function () {
 		},
 		ready: function() {
 			this.fetchHosts();
-			setInterval(this.fetchHosts, 5000);
 		},
 		methods: {
 			fetchEvents: function() {
 				this.$http.get('/tasks.json').then((response) => {
 					this.$set('tasks', response.body);
+					setTimeout(this.fetchHosts, 5000);
 				}, (response) => {
 					console.debug(response);
 				});
