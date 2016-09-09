@@ -61,7 +61,10 @@ get '/' => sub {
 };
 
 get '/tasks.json' => sub {
-	my @tasks = &fetch_host_activity;
+
+	my %query = request->params('query');
+
+	my @tasks = &fetch_host_activity($query{host});
 
 	content_type 'application/json';
     return to_json \@tasks;
