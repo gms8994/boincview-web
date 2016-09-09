@@ -18,7 +18,12 @@ use XML::XPath;
 
 my $ini = Config::Tiny->read("./boinc.ini");
 
-my @hosts = grep { !/Config/ } sort keys %{$ini};
+my @hosts = map { { name => $_, active => 1 } } sort keys %{$ini};
+my %hosts = ();
+my $index = 0;
+foreach my $host (@hosts) {
+	$hosts{$host->{name}} = $index++;
+}
 
 set show_errors => 1;
 get '/' => sub {
@@ -50,7 +55,6 @@ get '/' => sub {
 	);
 
 	template 'home.tt', {
-		hosts => \@hosts,
 		headers => \%headers,
 		header_order => \@header_order,
 	};
@@ -63,6 +67,10 @@ get '/tasks.json' => sub {
     return to_json \@tasks;
 };
 
+get '/hosts.json' => sub {
+	content_type 'application/json';
+    return to_json \@hosts;
+};
 dance;
 
 sub fetch_host_activity {
@@ -76,6 +84,8 @@ sub fetch_host_activity {
 
 		# If a host was provided and we're not on it, skip it
 		next if defined $host && $host ne $host_section;
+
+		$hosts[$hosts{$host_section}]->{active} = 0;
 
 		my $boinc = new Net::BOINC((
 			'hostname' => $ini->{$host_section}{ip},
@@ -94,6 +104,7 @@ sub fetch_host_activity {
 		foreach my $node (@{$nodes}) {
 			my %node_work;
 			$node_work{project} = $host_section;
+			$node_work{application} = $host_section;
 			$node_work{node} = $host_section;
 			$node_work{cpu_time} = $xp->findvalue('active_task/current_cpu_time', $node)->value();
 			$node_work{percent_done} = sprintf('%.02f', $xp->findvalue('active_task/fraction_done', $node)->value() * 100);
@@ -105,6 +116,8 @@ sub fetch_host_activity {
 
 			push @results, \%node_work;
 		}
+
+		$hosts[$hosts{$host_section}]->{active} = 1;
 	}
 
 	return @results;
