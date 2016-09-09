@@ -16,22 +16,21 @@
 	</thead>
 	<tbody>
 		<tr v-for="task in tasks | caseInsensitiveOrderBy sortType sortReverse" v-bind:class="{ 'success': task.status == 1 }">
-			<td class="col-md-1 ellipsis">{{ task.result | truncate '15' }}</td>
+			<td class="col-md-1 ellipsis">{{ task.project | truncate '15' }}</td>
 			<td class="col-md-1 ellipsis">{{ task.result | truncate '15' }}</td>
 			<td class="col-md-1 ellipsis">{{ task.node }}</td>
 			<td class="col-md-2 ellipsis">{{ task.cpu_time | duration 'hh:mm:ss' }}</td>
-			<td class="col-md-2 ellipsis">{{ task.result | truncate '20' }}</td>
 			<td class="col-md-2 ellipsis">
 				<div class="progress">
-					<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="{{ task.percent_done }}" aria-valuemin="0" aria-valuemax="100" v-bind:style="{ width: task.percent_done + '%' }">
+					<div v-bind:class="{ 'progress-bar': true, 'progress-bar-info': true, 'progress-bar-striped': true, 'active': task.status == 1 }" role="progressbar" aria-valuenow="{{ task.percent_done }}" aria-valuemin="0" aria-valuemax="100" v-bind:style="{ width: task.percent_done + '%' }">
 						<span style="color: black;">{{ task.percent_done }}%</span>
 					</div>
 				</div>
 			</td>
-			<td class="col-md-2 ellipsis">{{ task.status }}</td>
+			<td class="col-md-2 ellipsis">{{ task.status | status }}</td>
 			<td class="col-md-2 ellipsis">{{ task.to_completion | duration 'hh:mm:ss' }}</td>
-			<td class="col-md-2 ellipsis">{{ task.report_deadline }}</td>
-			<td class="col-md-2 ellipsis">{{ moment("now").add(task.completion_at, 'seconds').fromNow() }}</td>
+			<td class="col-md-2 ellipsis">{{ moment(task.report_deadline).format('MM/DD/YYYY h:mm:ss a') }}</td>
+			<td class="col-md-2 ellipsis">{{ moment("now").add(task.completion_at, 'seconds').format('MM/DD/YYYY h:mm:ss a') }}</td>
 		</tr>
 	</tbody>
 </table>
