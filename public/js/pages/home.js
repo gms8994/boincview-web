@@ -33,10 +33,14 @@ window.onload = function () {
 		},
 		filters: {
 			truncate: function(string, value) {
-				return string.substring(0, value) + '...';
+				var len = string.length;
+				return string.substring(0, value) + (len > value ? '...' : '');
 			},
 			duration: function(number, format) {
 				return moment.duration(number * 1000).format(format, { trim: false });
+			},
+			status: function(status) {
+				return status == 1 ? 'Running' : 'Stopped';
 			},
 			caseInsensitiveOrderBy: function (arr, sortKey, reverse) {
 				return arr;
