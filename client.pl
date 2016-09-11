@@ -110,13 +110,13 @@ sub fetch_host_activity {
 			$node_work{project} = $xp->findvalue('//project[master_url/text() = "' . $project_url . '"]/project_name')->value();
 			$node_work{application} = $host_section;
 			$node_work{node} = $host_section;
-			$node_work{cpu_time} = $xp->findvalue('active_task/current_cpu_time', $node)->value();
-			$node_work{percent_done} = sprintf('%.02f', $xp->findvalue('active_task/fraction_done', $node)->value() * 100);
+			$node_work{cpu_time} = 0 + $xp->findvalue('active_task/current_cpu_time', $node)->value();
+			$node_work{percent_done} = 0 + sprintf('%.02f', $xp->findvalue('active_task/fraction_done', $node)->value() * 100);
 			$node_work{status} = $xp->findvalue('active_task/active_task_state', $node)->value();
-			$node_work{to_completion} = $xp->findvalue('estimated_cpu_time_remaining', $node)->value();
+			$node_work{to_completion} = 0 + $xp->findvalue('estimated_cpu_time_remaining', $node)->value();
 			$node_work{result} = $xp->findvalue('wu_name', $node)->value();
 			$node_work{report_deadline} = $xp->findvalue('report_deadline', $node)->value() * 1000; # in ms
-			$node_work{completion_at} = $node_work{to_completion};
+			$node_work{completion_at} = 0 + $node_work{to_completion};
 
 			push @results, \%node_work;
 		}

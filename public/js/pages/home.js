@@ -54,8 +54,8 @@ window.onload = function () {
 						if (Vue.util.isObject(a) && '$value' in a) a = a.$value
 						if (Vue.util.isObject(b) && '$value' in b) b = b.$value
 					}
-					a = (Vue.util.isObject(a) ? Vue.parsers.path.getPath(a, sortKey) : a).toLowerCase();
-					b = (Vue.util.isObject(b) ? Vue.parsers.path.getPath(b, sortKey) : b).toLowerCase();
+					a = Vue.util.isObject(a) ? Vue.parsers.path.getPath(a, sortKey) : a;
+					b = Vue.util.isObject(b) ? Vue.parsers.path.getPath(b, sortKey) : b;
 
 					var sorted = [ a, b ].sort(naturalSort);
 
