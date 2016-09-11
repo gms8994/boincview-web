@@ -43,7 +43,6 @@ window.onload = function () {
 				return status == 1 ? 'Running' : 'Stopped';
 			},
 			caseInsensitiveOrderBy: function (arr, sortKey, reverse) {
-				return arr;
 				// arr = convertArray(arr)
 				if (!sortKey) {
 					return arr
@@ -55,13 +54,13 @@ window.onload = function () {
 						if (Vue.util.isObject(a) && '$value' in a) a = a.$value
 						if (Vue.util.isObject(b) && '$value' in b) b = b.$value
 					}
-					a = Vue.util.isObject(a) ? Vue.parsers.path.getPath(a, sortKey) : a
-					b = Vue.util.isObject(b) ? Vue.parsers.path.getPath(b, sortKey) : b
+					a = (Vue.util.isObject(a) ? Vue.parsers.path.getPath(a, sortKey) : a).toLowerCase();
+					b = (Vue.util.isObject(b) ? Vue.parsers.path.getPath(b, sortKey) : b).toLowerCase();
 
-					// console.debug([ a, b ].sort());
-					// console.debug([ a, b ].sort(naturalSort));
-					// return [ a, b ].sort(naturalSort);
-				})
+					var sorted = [ a, b ].sort(naturalSort);
+
+					return a === sorted[0] ? 0 : a > sorted[0] ? order : -order
+				});
 			}
 		}
 	});
