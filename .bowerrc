@@ -1,3 +1,6 @@
 {
-  "directory": "public/components"
+  "directory": "public/components",
+  "scripts": {
+    "postinstall": "./node_modules/.bin/bower-requirejs --config require-config.js --base-url=/components"
+  }
 }
