@@ -1,0 +1,8 @@
+{
+  "name": "boincview-web",
+  "version": "1.0.0",
+  "dependencies": {
+    "bower": "^1.x",
+	"bower-requirejs": "1.2.0"
+  }
+}
