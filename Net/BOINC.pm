@@ -77,6 +77,12 @@ sub _auth_request_one {
 sub _auth_request_two {
 	my ($self, $nonce) = @_;
 
+    if (! $self->{password}) {
+        $self->{authorized} = 0;
+        warn "No password for " . $self->{hostname} . "!";
+        return "";
+    }
+
 	my $hash = md5_hex($nonce, $self->{password});
 	my $result = $self->_rpc("<auth2><nonce_hash>${hash}</nonce_hash></auth2>");
 
