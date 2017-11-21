@@ -4,12 +4,7 @@
     <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/general.css">
-    <script src="/components/moment/moment.js"></script>
-    <script src="/components/moment-duration-format/lib/moment-duration-format.js"></script>
-    <script src="/components/vue/dist/vue.js"></script>
-    <script src="/components/vue-resource/dist/vue-resource.js"></script>
-    <script src="/components/javascript-natural-sort/naturalSort.js"></script>
-    <script src="/js/pages/home.js"></script>
+    <script src="/js/bundle.js"></script>
   </head>
 
   <body>
