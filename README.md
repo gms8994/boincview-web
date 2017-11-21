@@ -4,7 +4,9 @@ Aim to replicate BOINCView in an open source, perl script utilizing a browser to
 ## Install instructions
 ```
 cpanm -nL . --installdeps .
-bower install
+
+npm install
+npm run dev
 ```
 
 ## Initial setup
