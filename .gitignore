@@ -24,3 +24,4 @@ boinc.ini
 /logs/
 /man/
 /public/components/
+public/js/*.js
