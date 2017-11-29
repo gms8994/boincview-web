@@ -25,4 +25,6 @@ boinc.ini
 /man/
 /public/components/
 public/js/*.js
+public/css/*.css
 node_modules
+
