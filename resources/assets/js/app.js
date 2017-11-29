@@ -2,10 +2,12 @@ import _ from 'lodash';
 import Vue from 'vue'
 import axios from 'axios';
 
-require('moment');
-require('natural-sort');
+import * as naturalSort from 'javascript-natural-sort';
+import moment from 'moment';
+import * as moment_duration from 'moment-duration-format';
 
 window.onload = function () {
+
     new Vue({
         el: '#app',
         data: {
