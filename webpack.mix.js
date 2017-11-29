@@ -1,34 +1,26 @@
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+let mix = require('laravel-mix');
 
-module.exports = {
-  entry: {
-    // 'bundle.min.css': [
-    //   path.resolve(__dirname, 'src/index.css')
-    // ],
-    'bundle.js': [
-      path.resolve(__dirname, 'src/index.js')
-    ]
-  },
-  output: {
-    filename: '[name]',
-    path: path.resolve(__dirname, 'public')
-  },
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.common.js' // 'vue/dist/vue.common.js' for webpack 1
-    }
-  },
-  module: {
-    loaders: [
-        { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
-        { test: /\.css$/, loader: 'style-loader!css-loader' }
-    ],
-  },
-  plugins: [
-    new ExtractTextPlugin("bundle.min.css"),
-  ]
-};
+/*
+ |--------------------------------------------------------------------------
+ | Mix Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Mix provides a clean, fluent API for defining some Webpack build steps
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for the application as well as bundling up all the JS files.
+ |
+ */
+
+mix.js('resources/assets/js/app.js', 'public/js');
+
+mix
+    .copy('node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2', 'public/fonts')
+    .copy('node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', 'public/fonts')
+    .copy('node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf', 'public/fonts')
+    .copy('node_modules/font-awesome/fonts/fontawesome-webfont.woff2', 'public/fonts')
+    .copy('node_modules/font-awesome/fonts/fontawesome-webfont.woff', 'public/fonts')
+    .copy('node_modules/font-awesome/fonts/fontawesome-webfont.ttf', 'public/fonts')
+    .styles([
+        'node_modules/font-awesome/css/font-awesome.css',
+        'node_modules/bootstrap/dist/css/bootstrap.css',
+    ], 'public/css/app.css')
