@@ -12,6 +12,14 @@ npm run dev
 ## Initial setup
 Copy the boinc.ini.sample file to boinc.ini, and edit it. This is a standard style INI file, utilizing sections with keys and values to set up BOINC hosts to monitor. Edit the section titles for the hosts that you want to add, and adjust the INI-keys for ip and key to connect to the hosts.
 
+### BOINC Auth Key
+These locations assume you installed the BOINC client via the download at http://boinc.berkeley.edu/download.php
+
+* On OSX based machines, it can be found at `/Library/Application Support/BOINC Data/gui_rpc_auth.cfg`
+* On Ubuntu (other distros TBD), it can be found at `/var/lib/boinc-client/gui_rpc_auth.cfg`
+* Windows location TBD
+
+## Usage instructions
 From the terminal, run perl client.pl. You'll see output similar to the following:
 
 ```
