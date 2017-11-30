@@ -20,18 +20,32 @@ window.onload = function () {
             this.fetchHosts();
         },
         methods: {
-            fetchEvents: function() {
-                axios.get('/tasks.json').then((response) => {
-                    this.$set('tasks', response.data);
-                    setTimeout(this.fetchHosts, 5000);
+            fetchEventsForHost: function(host) {
+                axios.get('/tasks.json?host=' + host).then((response) => {
+                    const that = this;
+
+                    var tasks = _(this.$get('tasks')).groupBy("node").value();
+                    tasks[host] = response.data;
+
+                    let task_set = [];
+
+                    _(tasks).each(function(host) {
+                        task_set = task_set.concat(host);
+                    });
+
+                    this.$set('tasks', task_set);
+                    setTimeout(function() { that.fetchEventsForHost(host); }, 5000);
                 }, (response) => {
                     console.debug(response);
                 });
             },
             fetchHosts: function() {
                 axios.get('/hosts.json').then((response) => {
+                    const that = this;
+                    _(response.data).each(function(host) {
+                        that.fetchEventsForHost(host.name);
+                    });
                     this.$set('hosts', response.data);
-                    this.fetchEvents();
                 }, (response) => {
                     console.debug(response);
                 });
