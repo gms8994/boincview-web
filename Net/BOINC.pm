@@ -102,12 +102,12 @@ sub _rpc {
 
 	my $result = $self->{socket}->print($string);
 
-	my $answer = "";
-	while (! $self->{socket}->eof) {
-		$answer .= $self->{socket}->getc();
+    my $answer = "";
+    while ($self->{socket}->sysread(my $buf, 16384) > 0) {
+        $answer .= $buf;
 
-		last if ($answer =~ s/\n\003//);
-	}
+        last if ($answer =~ s/\n\003//);
+    }
 
 	$answer =~ s|</?boinc_gui_rpc_reply>||g;
 	$answer =~ s/^\s*|\s*$//g;
