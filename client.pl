@@ -16,14 +16,9 @@ use Net::BOINC;
 use Template;
 use XML::XPath;
 
-my $ini = Config::Tiny->read("./boinc.ini");
+my ($ini, @hosts, %hosts);
 
-my @hosts = map { { name => $_, active => 1 } } sort keys %{$ini};
-my %hosts = ();
-my $index = 0;
-foreach my $host (@hosts) {
-	$hosts{$host->{name}} = $index++;
-}
+loadHosts();
 
 set show_errors => 1;
 get '/' => sub {
@@ -58,8 +53,11 @@ get '/' => sub {
 	};
 };
 
-get '/tasks.json' => sub {
+get '/exit' => sub {
+    exit;
+};
 
+get '/tasks.json' => sub {
 	my %query = request->params('query');
 
 	my @tasks = &fetch_host_activity($query{host});
@@ -69,6 +67,7 @@ get '/tasks.json' => sub {
 };
 
 get '/hosts.json' => sub {
+    loadHosts();
 	content_type 'application/json';
     return to_json \@hosts;
 };
@@ -125,4 +124,15 @@ sub fetch_host_activity {
 	}
 
 	return @results;
+}
+
+sub loadHosts {
+    $ini = Config::Tiny->read("./boinc.ini");
+
+    @hosts = map { { name => $_, active => 1 } } sort keys %{$ini};
+    %hosts = ();
+    my $index = 0;
+    foreach my $host (@hosts) {
+        $hosts{$host->{name}} = $index++;
+    }
 }
