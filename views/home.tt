@@ -19,7 +19,7 @@
 			<td class="col-md-1 ellipsis">{{ task.project | truncate '15' }}</td>
 			<td class="col-md-1 ellipsis">{{ task.result | truncate '15' }}</td>
 			<td class="col-md-1 ellipsis">{{ task.node }}</td>
-			<td class="col-md-2 ellipsis">{{ task.cpu_time | duration 'hh:mm:ss' }}</td>
+			<td class="col-md-1 ellipsis text-right">{{ task.cpu_time | duration 'hh:mm:ss' }}</td>
 			<td class="col-md-2 ellipsis">
 				<div class="progress">
 					<div v-bind:class="{ 'progress-bar': true, 'progress-bar-info': true, 'progress-bar-striped': true, 'active': task.status == 1 }" role="progressbar" aria-valuenow="{{ task.percent_done }}" aria-valuemin="0" aria-valuemax="100" v-bind:style="{ width: task.percent_done + '%' }">
@@ -27,10 +27,10 @@
 					</div>
 				</div>
 			</td>
-			<td class="col-md-2 ellipsis">{{ task.status | status }}</td>
-			<td class="col-md-2 ellipsis">{{ task.to_completion | duration 'hh:mm:ss' }}</td>
-			<td class="col-md-2 ellipsis">{{ moment(task.report_deadline).format('MM/DD/YYYY h:mm:ss a') }}</td>
-			<td class="col-md-2 ellipsis">{{ moment("now").add(task.completion_at, 'seconds').format('MM/DD/YYYY h:mm:ss a') }}</td>
+			<td class="col-md-1 ellipsis">{{ task.status | status }}</td>
+			<td class="col-md-1 ellipsis text-right">{{ task.to_completion | duration 'hh:mm:ss' }}</td>
+			<td class="col-md-1 ellipsis text-right">{{ moment(task.report_deadline).format('MM/DD/YYYY h:mm:ss a') }}</td>
+			<td class="col-md-1 ellipsis text-right">{{ moment("now").add(task.completion_at, 'seconds').format('MM/DD/YYYY h:mm:ss a') }}</td>
 		</tr>
 	</tbody>
 </table>
