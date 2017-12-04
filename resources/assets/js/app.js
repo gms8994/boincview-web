@@ -13,7 +13,7 @@ window.onload = function () {
         data: {
             hosts: [],
             tasks: [],
-            sortType: 'project',
+            sortType: 'to_completion',
             sortReverse: 1,
         },
         ready: function() {
@@ -34,7 +34,7 @@ window.onload = function () {
                     });
 
                     this.$set('tasks', task_set);
-                    setTimeout(function() { that.fetchEventsForHost(host); }, 5000);
+                    setTimeout(function() { that.fetchEventsForHost(host); }, 2000);
                 }, (response) => {
                     console.debug(response);
                 });
@@ -70,7 +70,7 @@ window.onload = function () {
                 if (!sortKey) {
                     return arr
                 }
-                var order = (reverse && reverse < 0) ? -1 : 1
+                let order = (reverse && reverse < 0) ? -1 : 1
 
                 // sort on a copy to avoid mutating original array
                 return arr.slice().sort(function (a, b) {
@@ -81,9 +81,12 @@ window.onload = function () {
                     a = Vue.util.isObject(a) ? Vue.parsers.path.getPath(a, sortKey) : a;
                     b = Vue.util.isObject(b) ? Vue.parsers.path.getPath(b, sortKey) : b;
 
-                    var sorted = [ a, b ].sort(naturalSort);
+                    if (! isNaN(a) && ! isNaN(b)) {
+                        return (a - b) * order;
+                    }
 
-                    return a === sorted[0] ? 0 : a > sorted[0] ? order : -order
+                    let sorted = [ a, b ].sort(naturalSort);
+                    return a === sorted[0] ? 0 : (a > sorted[0] ? order : -order);
                 });
             }
         }
