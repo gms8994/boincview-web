@@ -8,6 +8,10 @@ import * as moment_duration from 'moment-duration-format';
 
 window.onload = function () {
 
+    const fetch_timeout = 1000;
+    const refresh_interval = 5000;
+    let overridden_timeouts = [];
+
     new Vue({
         el: '#app',
         data: {
@@ -21,10 +25,12 @@ window.onload = function () {
         },
         methods: {
             fetchEventsForHost: function(host) {
-                axios.get('/tasks.json?host=' + host).then((response) => {
-                    const that = this;
+                const that = this;
 
-                    var tasks = _(this.$get('tasks')).groupBy("node").value();
+                let the_timeout = overridden_timeouts[host] || fetch_timeout;
+
+                axios.get('/tasks.json?host=' + host, { timeout: the_timeout }).then((response) => {
+                    var tasks = _(that.$get('tasks')).groupBy("node").value();
                     tasks[host] = response.data;
 
                     let task_set = [];
@@ -33,10 +39,28 @@ window.onload = function () {
                         task_set = task_set.concat(host);
                     });
 
+                    _(that.$get('hosts')).each(function(localhost) {
+                        if (localhost.name == host && response.data.length > 0) {
+                            localhost.active = true;
+                        } else if (localhost.name == host && response.data.length == 0) {
+                            localhost.active = false;
+                        }
+                    });
+
                     this.$set('tasks', task_set);
-                    setTimeout(function() { that.fetchEventsForHost(host); }, 2000);
-                }, (response) => {
-                    console.debug(response);
+                    setTimeout(function() { that.fetchEventsForHost(host); }, refresh_interval);
+                })
+                .catch(function (error) {
+                    if (error.message.match(/timeout of (\d+)ms exceeded/)) {
+                        overridden_timeouts[host] = (overridden_timeouts[host] || fetch_timeout) + 1000;
+                    }
+
+                    _(that.$get('hosts')).each(function(localhost) {
+                        if (localhost.name == host) {
+                            localhost.active = false;
+                        }
+                    });
+                    setTimeout(function() { that.fetchEventsForHost(host); }, refresh_interval);
                 });
             },
             fetchHosts: function() {
@@ -46,8 +70,6 @@ window.onload = function () {
                         that.fetchEventsForHost(host.name);
                     });
                     this.$set('hosts', response.data);
-                }, (response) => {
-                    console.debug(response);
                 });
             },
             moment: function () {
