@@ -87,10 +87,11 @@ sub fetch_host_activity {
 
 		$hosts[$hosts{$host_section}]->{active} = 0;
 
-		my $boinc = new Net::BOINC((
-			'hostname' => $ini->{$host_section}{ip},
-			'password' => $ini->{$host_section}{key},
-		));
+        my $boinc = new Net::BOINC((
+            'hostname' => $ini->{$host_section}{ip},
+            'password' => $ini->{$host_section}{key},
+            'port' => $ini->{$host_section}{port},
+        ));
 		next unless $boinc;
 
 		my $result = $boinc->get_simple_gui_info();
