@@ -5,6 +5,8 @@ Aim to replicate BOINCView in an open source, perl script utilizing a browser to
 ```
 cpanm -nL . --installdeps .
 
+# Make sure that your nodejs version is at least 7.2 for all commands to run successfully
+
 npm install
 npm run dev
 ```
