@@ -24,15 +24,15 @@ set show_errors => 1;
 get '/' => sub {
 
 	my %headers = (
-		'Project' => 'project',
-		'Result' => 'result',
-		'Host' => 'node',
-		'CPU Time' => 'cpu_time',
-		'% done' => 'percent_done',
-		'Status' => 'status',
-		'To completion' => 'to_completion',
-		'Report deadline' => 'report_deadline',
-		'Completion at' => 'completion_at',
+		'Project' => { 'key' => 'project', 'class' => '' },
+		'Result' => { 'key' => 'result', 'class' => 'hidden-xs hidden-sm' },
+		'Host' => { 'key' => 'node', 'class' => '' },
+		'CPU Time' => { 'key' => 'cpu_time', 'class' => 'hidden-xs hidden-sm' },
+		'% done' => { 'key' => 'percent_done', 'class' => 'hidden-xs hidden-sm' },
+		'Status' => { 'key' => 'status', 'class' => '' },
+		'To completion' => { 'key' => 'to_completion', 'class' => '' },
+		'Report deadline' => { 'key' => 'report_deadline', 'class' => 'hidden-xs hidden-sm' },
+		'Completion at' => { 'key' => 'completion_at', 'class' => '' },
 	);
 
 	my @header_order = (
@@ -99,6 +99,7 @@ sub fetch_host_activity {
 		next if ($result eq '');
 
         my $xp = XML::LibXML->load_xml(string => $result);
+        # warn $result;
 
 		my $nodes = $xp->findnodes(q{//result});
 
