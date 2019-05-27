@@ -28,7 +28,7 @@
     "autosize": "^3.0.20",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.23.0",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.1.2",
     "cross-env": "^5.0.1",
     "dotenv": "^2.0.0",
     "font-awesome": "^4.6.3",
